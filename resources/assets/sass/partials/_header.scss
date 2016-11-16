@@ -1,0 +1,24 @@
+.header {
+  background-color: $primary-color;
+  padding-top: 1rem;
+}
+.header .container {
+  border-top: 0;
+  padding-bottom: 7.5rem;
+  padding-top: 7.5rem;
+  position: relative;
+  text-align: center;
+}
+.header .img {
+  height: 15rem;
+  margin-bottom: 2rem;
+}
+.header .title {
+  font-family: 'Gotham Rounded A', 'Gotham Rounded B', 'Helvetica Neue', Arial, sans-serif;
+}
+
+@media (min-width: 40rem) {
+  .header {
+    padding-top: 5rem;
+  }
+}

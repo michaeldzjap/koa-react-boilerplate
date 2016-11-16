@@ -1,0 +1,18 @@
+// 3rd party
+@import '~normalize.css/normalize';
+@import '~milligram/dist/milligram';
+
+// Modules and variables
+@import 'partials/base';
+
+// Partials
+@import 'partials/navigation';
+@import 'partials/header';
+@import 'partials/post';
+
+.wrapper .container {
+  max-width: 80rem;
+}
+.header + div {
+  border-top: 0;
+}
