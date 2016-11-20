@@ -34,10 +34,11 @@ class Home extends Component {
   }
 
   render() {
+    const posts = this.props.posts.map(({id, title, content}) => <Post key={id} title={title} content={content} />)
     return (
       <div>
         <Header />
-        <Post id="what" title="What is it?" content="<p>This project provides a starting point for a web app using several modern web technologies, including: Koa2, Webpack2 + React</p><p>Use it to build something cool.</p>" />
+        {posts}
       </div>
     )
   }

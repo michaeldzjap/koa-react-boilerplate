@@ -13,7 +13,7 @@ export const defaultPosts = _ => {
 }
 
 export const receivePosts = receivedPosts => {
-  const posts = receivedPosts.posts.map(({title, content}) => ({title, content}))
+  const posts = receivedPosts.posts.map(({id, title, content}) => ({id, title, content}))
   return Object.assign({}, {posts, isFetching: false})
 }
 
