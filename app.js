@@ -1,5 +1,7 @@
+import path from 'path'
 import http from 'http'
 import Koa from 'koa'
+import serve from 'koa-static'
 import logger from 'koa-logger'
 import { devMiddleware, hotMiddleware } from 'koa-webpack-middleware'
 import webpack from 'webpack'
@@ -23,10 +25,12 @@ if (config.app.env === 'development') {
 }
 
 app.use(errorMiddleware())
+app.use(serve(path.join(__dirname, 'public')));
 
 app.use(async ctx => {
   try {
     const {status, redirect, body} = await router(ctx.url)
+    //console.log('OUTPUT:', [status, redirect, body])
     ctx.status = status
 
     if (redirect) {

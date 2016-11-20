@@ -2,9 +2,13 @@ import path from 'path'
 import React from 'react'
 import { PassThrough } from 'stream'
 import ReactDOMStream from 'react-dom-stream/server'
-import { match, RouterContext } from 'react-router'
+import { match, RouterContext, Router, browserHistory } from 'react-router'
+import { Provider } from 'react-redux'
+import configureStore from '../shared/store/configureStore'
 import config from '../../config'
 import routes from './routes'
+import { defaultPosts } from '../shared/reducers/posts'
+import 'babel-polyfill'
 
 /**
  * Loop through all components in the renderProps object
@@ -36,7 +40,7 @@ const getPropsFromRoute = ({routes}: Object, componentProps: Array) => {
  * @param Object routerContext
  * @return PassThrough stream
  */
-const createHTMLStream = (reactInitialData: String, routerContext: Object) => {
+const createHTMLStream = (reactInitialData: String, provider: Object) => {
   const stream = new PassThrough()
   stream.write(
     `<!DOCTYPE html>
@@ -50,11 +54,11 @@ const createHTMLStream = (reactInitialData: String, routerContext: Object) => {
       <body>
         <div id="root" class="wrapper"><div>`
   )
-  const reactStream = ReactDOMStream.renderToString(routerContext)
+  const reactStream = ReactDOMStream.renderToString(provider)
   reactStream.pipe(stream, {end: false})
   reactStream.on('end', _ => {
     let htmlString = '</div></div>'
-    htmlString += reactInitialData ? `<script id="initial-data" type="application/json">${reactInitialData}</script>` : ''
+    htmlString += reactInitialData ? `<script id="initial-data">window.__INITIAL_STATE__ = ${reactInitialData}</script>` : ''
     htmlString += `<script type="text/javascript" src="/assets/bundle.js"></script>
         <script type="text/javascript" src="/assets/styles.js"></script>
       </body>
@@ -68,19 +72,41 @@ const createHTMLStream = (reactInitialData: String, routerContext: Object) => {
 
 /**
  * @param Object renderProps
+ * @return Object {status, body}
  */
-const renderRoute = (renderProps: Object) => {
-  const routeProps = getPropsFromRoute(renderProps, ['requestInitialData'])
+const renderPage = (renderProps: Object) => {
+  const routeProps = getPropsFromRoute(renderProps, ['requestInitialData', 'receiveInitialData', 'defaultState'])
   const status = 200
-  let body
-  if (routeProps.requestInitialData) {
-    routeProps.requestInitialData().then(data => {
-      const handleCreateElement = (Component, props) => (<Component initialData={data} {...props} />)
-      body = createHTMLStream(JSON.stringify(data), <RouterContext createElement={handleCreateElement} {...renderProps} />)
+  let initialState = {posts: defaultPosts()}
+
+  /**
+   * Configure the store and render the Provider
+   * @param Object initialState
+   * @param Object renderProps
+   * @return PassThrough body
+   */
+  const renderProvider = (initialState: Object, renderProps: Object) => {
+    const store = configureStore(initialState)
+    const body = createHTMLStream(
+      JSON.stringify(initialState),
+      <Provider store={store}>
+        <RouterContext {...renderProps} />
+      </Provider>
+    )
+    return body
+  }
+
+  if (routeProps.requestInitialData && routeProps.receiveInitialData && routeProps.defaultState) {
+    return routeProps.requestInitialData().then(data => {
+      const defaultState = routeProps.defaultState()  // default reducer state
+      const key = Object.keys(defaultState)[0]  // the reducer key
+      const nextState = Object.assign({}, defaultState[key], routeProps.receiveInitialData(data)) // update reducer state
+      initialState = Object.assign({}, initialState, {[key]: nextState})  // update total reducer state
+      const body = renderProvider(initialState, renderProps)
       return {status, body}
     })
   } else {
-    body = createHTMLStream(null, <RouterContext {...renderProps} />)
+    const body = renderProvider(initialState, renderProps)
     return {status, body}
   }
 }
@@ -98,7 +124,7 @@ export const router = (location: String) => new Promise((resolve, reject) => {
         const redirect = path.join(redirectLocation.pathname, redirectLocation.search)
         resolve({status, redirect})
       } else if (renderProps) {
-        resolve(renderRoute(renderProps))
+        resolve(renderPage(renderProps))
       } else {
         const err = new Error('Not found')
         err.status = 404

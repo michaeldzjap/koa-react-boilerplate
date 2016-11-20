@@ -1,16 +1,9 @@
-import React, { Component } from 'react'
+import React, { Component, PropTypes } from 'react'
+import { connect } from 'react-redux'
 import Post from '../components/post'
-
-class Home extends Component {
-  render() {
-    return (
-      <div>
-        <Header />
-        <Post id="what" title="What is it?" content="<p>This project provides a starting point for a web app using several modern web technologies, including: Koa2, Webpack2 + React</p><p>Use it to build something cool.</p>" />
-      </div>
-    )
-  }
-}
+import AppApi from '../api/AppApi'
+import PostsActionCreators from '../actions/PostsActionCreators'
+import { defaultPosts, receivePosts } from '../reducers/posts'
 
 class Header extends Component {
   render() {
@@ -32,4 +25,47 @@ class Header extends Component {
   }
 }
 
-export default Home
+class Home extends Component {
+  componentDidMount() {
+    // Client side data fetching: when this was not the 1st page loaded from server
+    if (!this.props.posts.length) {
+      PostsActionCreators.fetchPosts()
+    }
+  }
+
+  render() {
+    return (
+      <div>
+        <Header />
+        <Post id="what" title="What is it?" content="<p>This project provides a starting point for a web app using several modern web technologies, including: Koa2, Webpack2 + React</p><p>Use it to build something cool.</p>" />
+      </div>
+    )
+  }
+}
+
+Home.propTypes = {
+  posts: PropTypes.array.isRequired
+}
+
+/**
+ * Server side data fetching: fetch posts before loading page
+ */
+Home.requestInitialData = _ =>  AppApi.fetchPosts()
+
+/**
+ * Server side data fetching: handle received data
+ */
+Home.receiveInitialData = posts => receivePosts(posts)
+
+/**
+ * Server side data fetching: shape of posts state
+ */
+Home.defaultState = _ => ({posts: defaultPosts()})
+
+const mapStateToProps = state => ({
+  posts: state.posts.posts
+})
+
+const mapDispatchToProps = dispatch => ({})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home)
