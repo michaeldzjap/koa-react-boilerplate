@@ -14,6 +14,7 @@
     "dotenv": "^2.0.0",
     "isomorphic-fetch": "^2.2.1",
     "koa": "^2.0.0-alpha.7",
+    "koa-compress": "^2.0.0",
     "koa-static": "^3.0.0",
     "milligram": "^1.2.0",
     "normalize.css": "^5.0.0",
