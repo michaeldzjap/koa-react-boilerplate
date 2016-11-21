@@ -1,6 +1,7 @@
 import path from 'path'
 import React from 'react'
-import { match, RouterContext, Router, browserHistory } from 'react-router'
+//import { match, RouterContext, Router, browserHistory } from 'react-router'
+import { ServerRouter, createServerRenderContext } from 'react-router'
 import { Provider } from 'react-redux'
 import Helmet from 'react-helmet'
 import 'babel-polyfill'

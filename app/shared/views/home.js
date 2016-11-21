@@ -51,20 +51,26 @@ Home.propTypes = {
   posts: PropTypes.array.isRequired
 }
 
-/**
- * Server side data fetching: fetch posts before loading page
- */
-Home.requestInitialData = _ =>  AppApi.fetchPosts()
+// /**
+//  * Server side data fetching: fetch posts before loading page
+//  */
+// Home.requestInitialData = _ =>  AppApi.fetchPosts()
+//
+// /**
+//  * Server side data fetching: handle received data
+//  */
+// Home.receiveInitialData = posts => receivePosts(posts)
+//
+// /**
+//  * Server side data fetching: shape of posts state
+//  */
+// Home.defaultState = _ => ({posts: defaultPosts()})
 
-/**
- * Server side data fetching: handle received data
- */
-Home.receiveInitialData = posts => receivePosts(posts)
-
-/**
- * Server side data fetching: shape of posts state
- */
-Home.defaultState = _ => ({posts: defaultPosts()})
+Home.serverProps = {
+  requestInitialData:  _ =>  AppApi.fetchPosts(),
+  receiveInitialData: posts => receivePosts(posts),
+  defaultState: _ => ({posts: defaultPosts()})
+}
 
 const mapStateToProps = state => ({
   posts: state.posts.posts
