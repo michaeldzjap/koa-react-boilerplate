@@ -1,14 +1,15 @@
 import path from 'path'
 import React from 'react'
-import { PassThrough } from 'stream'
-import ReactDOMStream from 'react-dom-stream/server'
 import { match, RouterContext, Router, browserHistory } from 'react-router'
 import { Provider } from 'react-redux'
+import Helmet from 'react-helmet'
+import 'babel-polyfill'
+
+import { defaultPosts } from '../shared/reducers/posts'
 import configureStore from '../shared/store/configureStore'
+import HTMLStream from '../server/html'
 import config from '../../config'
 import routes from './routes'
-import { defaultPosts } from '../shared/reducers/posts'
-import 'babel-polyfill'
 
 /**
  * Loop through all components in the renderProps object
@@ -34,43 +35,6 @@ const getPropsFromRoute = ({routes}: Object, componentProps: Array) => {
 }
 
 /**
- * Create HTML response as a stream and embed initial data (if any)
- *
- * @param String reactInitialData
- * @param Object routerContext
- * @return PassThrough stream
- */
-const createHTMLStream = (reactInitialData: String, provider: Object) => {
-  const stream = new PassThrough()
-  stream.write(
-    `<!DOCTYPE html>
-      <html>
-      <head>
-        <meta charset="utf-8">
-        <meta httpEquiv="x-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Koa-React Scaffold</title>
-      </head>
-      <body>
-        <div id="root" class="wrapper"><div>`
-  )
-  const reactStream = ReactDOMStream.renderToString(provider)
-  reactStream.pipe(stream, {end: false})
-  reactStream.on('end', _ => {
-    let htmlString = '</div></div>'
-    htmlString += reactInitialData ? `<script id="initial-data">window.__INITIAL_STATE__ = ${reactInitialData}</script>` : ''
-    htmlString += `<script type="text/javascript" src="/assets/bundle.js"></script>
-        <script type="text/javascript" src="/assets/styles.js"></script>
-      </body>
-      </html>`
-    stream.write(htmlString)
-    stream.end()
-  })
-
-  return stream
-}
-
-/**
  * @param Object renderProps
  * @return Object {status, body}
  */
@@ -80,20 +44,16 @@ const renderPage = (renderProps: Object) => {
   let initialState = {posts: defaultPosts()}
 
   /**
-   * Configure the store and render the Provider
+   * Configure the store and render the page
    * @param Object initialState
    * @param Object renderProps
-   * @return PassThrough body
+   * @return RenderStream stream
    */
   const renderProvider = (initialState: Object, renderProps: Object) => {
     const store = configureStore(initialState)
-    const body = createHTMLStream(
-      JSON.stringify(initialState),
-      <Provider store={store}>
-        <RouterContext {...renderProps} />
-      </Provider>
-    )
-    return body
+    const markup = <Provider store={store}><RouterContext {...renderProps} /></Provider>
+    const helmet = Helmet.rewind()
+    return HTMLStream({initialState, markup, helmet})
   }
 
   if (routeProps.requestInitialData && routeProps.receiveInitialData && routeProps.defaultState) {
