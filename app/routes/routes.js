@@ -30,7 +30,7 @@ export const routes = [
 const passPropsToRoute = ({route, props}) => (
   <div>
     <Helmet title={route.title} />
-    <route.component {...props} routes={route.routes} />  // Pass the sub-routes down to keep nesting
+    <route.component {...props} routes={route.routes} />  {/* Pass the sub-routes down to keep nesting */}
   </div>
 )
 

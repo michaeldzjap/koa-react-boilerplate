@@ -1,9 +1,13 @@
 import path from 'path'
+import { PassThrough } from 'stream'
 import { createServerRenderContext } from 'react-router'
+import Helmet from 'react-helmet'
+import 'babel-polyfill'
 
 import { generateInitialState } from '../../shared/reducers'
 import { routes } from '../../routes/routes'
 import { extractInitialDataRequests, createProvider } from './router'
+import HTMLStream from '../html'
 
 export const errorMiddleware = _ => {
   return async (ctx, next) => {
@@ -31,7 +35,7 @@ export const routerMiddleware = _ => {
       const initialState = generateInitialState()
       const initialDataRequests = extractInitialDataRequests(ctx.url, routes)
 
-      if (initialDataRequests.length) {
+      if (!result.missed && initialDataRequests.length) {
         const initialData = await Promise.all(
           initialDataRequests.map(initialDataRequest => Promise.resolve(initialDataRequest()))
         )
@@ -44,5 +48,18 @@ export const routerMiddleware = _ => {
         await next()
       }
     }
+  }
+}
+
+export const renderMiddleware = _ => {
+  return async ctx => {
+    const stream = new PassThrough()
+    const helmet = Helmet.rewind()
+    const body = HTMLStream({initialState: ctx.initialState, markup: ctx.routerContext, helmet})
+    stream.write('<!DOCTYPE html>')
+    body.pipe(stream, {end: false})
+    body.on('end', _ => stream.end())
+    ctx.type = 'text/html'
+    ctx.body = stream
   }
 }
