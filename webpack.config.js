@@ -1,13 +1,14 @@
 const path = require('path')
 const webpack = require('webpack')
+const config = require('./config/app.js')
 
 const hmrQueries = ['webpack-hot-middleware/client', 'react-hot-loader/patch']
 
-const config = {
+module.exports = {
   devtool: 'cheap-module-eval-source-map',
   entry: {
     bundle: hmrQueries.concat('./app/client/index'),
-    styles: hmrQueries.concat('./resources/assets/sass/main.scss')
+    styles: hmrQueries.concat('./resources/assets/sass/main')
   },
   output: {
     path: path.join(__dirname, 'dist'),
@@ -32,12 +33,14 @@ const config = {
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoErrorsPlugin(),
     new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development')
+      'process.env': {
+        NODE_ENV: JSON.stringify(config.default.env),
+        URL: JSON.stringify(config.default.url),
+        PORT: JSON.stringify(config.default.port)
+      }
     })
   ],
   resolve: {
-    extensions: ['.js', '.jsx']
+    extensions: ['.js', '.jsx', '.scss']
   }
 }
-
-module.exports = config

@@ -31,7 +31,7 @@ class Home extends Component {
   componentDidMount() {
     // Client side data fetching: when this was not the 1st page loaded from server
     if (!this.props.posts.length) {
-      PostsActionCreators.fetchPosts()
+      this.props.fetchPosts()
     }
   }
 
@@ -39,7 +39,6 @@ class Home extends Component {
     const posts = this.props.posts.map(({id, title, content}) => <Post key={id} title={title} content={content} />)
     return (
       <div>
-        <Helmet title="Koa-React Biolerplate | Home" />
         <Header />
         {posts}
       </div>
@@ -51,25 +50,12 @@ Home.propTypes = {
   posts: PropTypes.array.isRequired
 }
 
-/**
- * Server side data fetching: fetch posts before loading page
- */
-Home.requestInitialData = _ =>  AppApi.fetchPosts()
-
-/**
- * Server side data fetching: handle received data
- */
-Home.receiveInitialData = posts => receivePosts(posts)
-
-/**
- * Server side data fetching: shape of posts state
- */
-Home.defaultState = _ => ({posts: defaultPosts()})
-
 const mapStateToProps = state => ({
   posts: state.posts.posts
 })
 
-const mapDispatchToProps = dispatch => ({})
+const mapDispatchToProps = dispatch => ({
+  fetchPosts: _ => dispatch(PostsActionCreators.fetchPosts())
+})
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home)

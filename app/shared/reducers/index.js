@@ -1,5 +1,7 @@
 import { combineReducers } from 'redux'
-import posts from './posts'
+import posts, { defaultPosts } from './posts'
+
+export const generateInitialState = _ => ({posts: defaultPosts()})
 
 const rootReducer = combineReducers({posts})
 
