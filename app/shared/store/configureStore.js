@@ -9,7 +9,11 @@ if (process.env.NODE_ENV === 'development') {
   middleware.push(createLogger())
 }
 
-const configureStore = initialState => {
+/**
+ * Configure the Redux store
+ * @param Object initialState
+ */
+const configureStore = (initialState: Object) => {
   const store = createStore(reducers, initialState, applyMiddleware(...middleware))
 
   if (module.hot) {

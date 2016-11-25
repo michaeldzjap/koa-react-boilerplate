@@ -39,7 +39,6 @@ class Home extends Component {
     const posts = this.props.posts.map(({id, title, content}) => <Post key={id} title={title} content={content} />)
     return (
       <div>
-        <Helmet title="Koa-React Biolerplate | Home" />
         <Header />
         {posts}
       </div>

@@ -5,7 +5,6 @@ class Contact extends Component {
   render() {
     return (
       <div>
-        <Helmet title="Koa-React Biolerplate | Contact" />
         <h2>Contact</h2>
       </div>
     )

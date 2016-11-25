@@ -5,27 +5,27 @@ import Helmet from 'react-helmet'
 import Main from '../shared/views/layouts/main'
 import Home from '../shared/views/home'
 import Contact from '../shared/views/contact'
-import Error from '../shared/views/error'
 import NotFound from '../shared/views/notFound'
+import { requestInitialPostsData } from '../shared/reducers/posts'
 
 const title = 'Koa-React Biolerplate'
 
-export const routes = {
-  home: {
+export const routes = [
+  {
     exactly: true,
     pattern: '/',
     label: 'Home page',
     title: `${title} | Home`,
     component: Home,
-    serverProps: Home.serverProps
+    requestInitialData: requestInitialPostsData
   },
-  contact: {
-    pattern: '/about',
-    label: 'About page',
+  {
+    pattern: '/contact',
+    label: 'Contact page',
     title: `${title} | Contact`,
     component: Contact
   }
-}
+]
 
 const passPropsToRoute = ({route, props}) => (
   <div>
@@ -34,15 +34,14 @@ const passPropsToRoute = ({route, props}) => (
   </div>
 )
 
-const matchWithSubRoutes = (key, i) => {
-  const route = routes[key]
-  return (<Match {...route} key={i} render={props => passPropsToRoute({route, props})} />)
+const matchWithSubRoutes = (route, i) => {
+  return (<Match {...route} key={`${route.label}-${i}`} render={props => passPropsToRoute({route, props})} />)
 }
 
 export const makeRoutes = _ => {
   return (
     <Main>
-      {Object.keys(routes).map(matchWithSubRoutes)}
+      {routes.map(matchWithSubRoutes)}
       <Miss title={`${title} | Page not found`} component={NotFound} />
     </Main>
   )
