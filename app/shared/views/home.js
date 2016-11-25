@@ -31,7 +31,7 @@ class Home extends Component {
   componentDidMount() {
     // Client side data fetching: when this was not the 1st page loaded from server
     if (!this.props.posts.length) {
-      PostsActionCreators.fetchPosts()
+      this.props.fetchPosts()
     }
   }
 
@@ -54,6 +54,8 @@ const mapStateToProps = state => ({
   posts: state.posts.posts
 })
 
-const mapDispatchToProps = dispatch => ({})
+const mapDispatchToProps = dispatch => ({
+  fetchPosts: _ => dispatch(PostsActionCreators.fetchPosts())
+})
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home)

@@ -27,7 +27,7 @@ const posts = (state = defaultPosts(), action) => {
       return Object.assign({}, state, {isFetching: true})
 
     case FETCH_POSTS_SUCCESS:
-      return receivePosts(action)
+      return receivePosts(action.posts)
 
     case FETCH_POSTS_FAILURE:
       return Object.assign({}, state, {isFetching: false})

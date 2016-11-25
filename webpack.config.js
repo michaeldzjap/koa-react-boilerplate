@@ -32,7 +32,11 @@ const config = {
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoErrorsPlugin(),
     new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development')
+      'process.env': {
+        NODE_ENV: JSON.stringify('development'),
+        URL: JSON.stringify('http://localhost'),
+        PORT: JSON.stringify('3000')
+      }
     })
   ],
   resolve: {
