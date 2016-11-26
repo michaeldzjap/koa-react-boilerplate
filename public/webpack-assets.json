@@ -1,0 +1,12 @@
+{
+  "bundle": {
+    "js": "/assets/bundle.658bcb98849037d60bbd.js"
+  },
+  "styles": {
+    "js": "/assets/styles.7ce328a9954b7cd5db96.js",
+    "css": "/assets/../css/styles.7ce328a9954b7cd5db96.css"
+  },
+  "manifest": {
+    "js": "/assets/manifest.6b1c91baa4ab2a49cd11.js"
+  }
+}

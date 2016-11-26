@@ -9,7 +9,7 @@ import webpack from 'webpack'
 
 import { errorMiddleware, routerMiddleware, renderMiddleware } from './app/server/middleware'
 import config from './config'
-import webpackConfig from './webpack.config'
+import webpackConfig from './webpack.config.development'
 
 const app = new Koa()
 

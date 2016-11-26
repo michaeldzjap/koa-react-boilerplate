@@ -11,7 +11,7 @@ module.exports = {
     styles: hmrQueries.concat('./resources/assets/sass/main')
   },
   output: {
-    path: path.join(__dirname, 'dist'),
+    path: path.join(__dirname, 'public/assets/js'),
     filename: '[name].js',
     publicPath: '/assets/'
   },
