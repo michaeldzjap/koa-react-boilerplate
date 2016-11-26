@@ -15,7 +15,7 @@ class Header extends Component {
           <img className="img" src="http://placehold.it/100x150" alt="Logo" title="Logo" />
           <h1 className="title">Koa-React</h1>
           <p className="description">
-            A Koa, React + Webpack scaffolding app
+            Boilerplate for a universal Koa, React + Webpack app
             <br />
             <i>
               <small>Currently v1.0.0</small>
