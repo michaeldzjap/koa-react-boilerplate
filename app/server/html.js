@@ -12,7 +12,7 @@ import config from '../../config'
  */
 const HTMLStream = (props: Object) => {
   const { initialState, markup, helmet } = props
-  const mapping = JSON.parse(fs.readFileSync(path.join(__dirname, 'webpack-assets.json'), 'utf8'))
+  const mapping = JSON.parse(fs.readFileSync(path.join(__dirname, '../../webpack-assets.json'), 'utf8'))
   const isDev = config.app.env === 'development'
   const stream = ReactDOMStream.renderToStaticMarkup(
     <html>

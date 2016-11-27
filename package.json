@@ -6,6 +6,11 @@
     "start": "node -r dotenv/config server.js",
     "watch": "nodemon -r dotenv/config --ignore app/client server.js",
     "build": "webpack --config webpack.config.production.js --progress --colors",
+    "prebuild": "rm -rf build",
+    "postbuild": "npm run convert",
+    "convert": "babel app --out-dir build",
+    "deploy": "echo Ready to deploy. Commit your changes and run git push origin master",
+    "predeploy": "npm run build",
     "stats": "webpack --profile --json > stats.json"
   },
   "author": "Michael Dzjaparidze",
@@ -31,6 +36,8 @@
   },
   "devDependencies": {
     "assets-webpack-plugin": "^3.5.0",
+    "babel": "^6.5.2",
+    "babel-cli": "^6.18.0",
     "babel-loader": "^6.2.8",
     "babel-preset-es2015": "^6.18.0",
     "babel-preset-react": "^6.16.0",

@@ -1,3 +1,4 @@
-import app from './app'
+const app = require('./app')
+const db = require('./database')
 
-export default {app}
+module.exports = {app: app, db: db}

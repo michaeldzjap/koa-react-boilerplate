@@ -2,7 +2,6 @@ import path from 'path'
 import { PassThrough } from 'stream'
 import { createServerRenderContext } from 'react-router'
 import Helmet from 'react-helmet'
-import 'babel-polyfill'
 
 import { generateInitialState } from '../../shared/reducers'
 import { routes } from '../../routes/routes'

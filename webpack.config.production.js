@@ -51,7 +51,7 @@ module.exports = {
       ]
     }),
     new AssetsPlugin({
-      path: path.join(__dirname, 'app/server'),
+      path: __dirname,
       prettyPrint: true
     }),
     new webpack.optimize.UglifyJsPlugin({
