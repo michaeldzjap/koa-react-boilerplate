@@ -1,6 +1,5 @@
 const path = require('path')
 const webpack = require('webpack')
-const config = require('./config/app.js')
 
 const hmrQueries = ['webpack-hot-middleware/client', 'react-hot-loader/patch']
 
@@ -34,9 +33,9 @@ module.exports = {
     new webpack.NoErrorsPlugin(),
     new webpack.DefinePlugin({
       'process.env': {
-        NODE_ENV: JSON.stringify(config.default.env),
-        URL: JSON.stringify(config.default.url),
-        PORT: JSON.stringify(config.default.port)
+        NODE_ENV: JSON.stringify('development'),
+        URL: JSON.stringify('http://localhost'),
+        PORT: JSON.stringify('3000')
       }
     })
   ],
