@@ -14,11 +14,11 @@ import { makeRoutes } from '../../routes/routes'
  * @return Array requestInitialData
  */
 export const extractInitialDataRequests = (pathname: String, routes: Array) => {
-  const fn = []
+  const dataRequests = []
   const collect = routes => {
     for (const route of routes) {
       if (matchPattern(route.pattern, {pathname}, route.exactly || null, route.parent || null) && route.hasOwnProperty('requestInitialData')) {
-        fn.push(route.requestInitialData)
+        dataRequests.push(route.requestInitialData)
       }
       if (route.hasOwnProperty('routes')) { // recursion for nested routes
         collect(route.routes)
@@ -27,12 +27,11 @@ export const extractInitialDataRequests = (pathname: String, routes: Array) => {
   }
   collect(routes)
 
-  return fn
+  return dataRequests
 }
 
 export const createProvider = (location: String, context: Object, initialState: Object) => {
   const store = configureStore(initialState)
-  console.log(location)
   return (
     <Provider store={store}>
       <ServerRouter location={location} context={context}>

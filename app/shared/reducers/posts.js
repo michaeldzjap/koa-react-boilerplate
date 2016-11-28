@@ -18,7 +18,9 @@ export const receivePosts = receivedPosts => {
 }
 
 export const requestInitialPostsData = _ => (
-  AppApi.fetchPosts().then(posts => ({posts: Object.assign({}, defaultPosts(), receivePosts(posts))}))
+  AppApi.fetchPosts().then(
+    posts => ({posts: Object.assign({}, defaultPosts(), receivePosts(posts))})
+  )
 )
 
 const posts = (state = defaultPosts(), action) => {
