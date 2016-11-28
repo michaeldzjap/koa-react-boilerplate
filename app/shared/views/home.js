@@ -2,9 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 
 import Post from '../components/post'
-import AppApi from '../api/AppApi'
 import PostsActionCreators from '../actions/PostsActionCreators'
-import { defaultPosts, receivePosts } from '../reducers/posts'
 
 class Header extends Component {
   render() {
