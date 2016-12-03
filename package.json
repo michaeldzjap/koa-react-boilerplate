@@ -14,7 +14,12 @@
     "test": "jest",
     "stats": "webpack --profile --json > stats.json"
   },
-  "keywords": ["koa", "react", "webpack", "redux"],
+  "keywords": [
+    "koa",
+    "react",
+    "webpack",
+    "redux"
+  ],
   "author": "Michael Dzjaparidze",
   "license": "ISC",
   "repository": {
@@ -32,7 +37,7 @@
     "koa": "^2.0.0-alpha.7",
     "koa-compress": "^2.0.0",
     "koa-static": "^3.0.0",
-    "milligram": "^1.2.0",
+    "milligram": "^1.2.2",
     "normalize.css": "^5.0.0",
     "react": "^15.4.1",
     "react-dom": "^15.4.1",
@@ -53,7 +58,7 @@
     "babel-preset-react": "^6.16.0",
     "babel-preset-stage-0": "^6.16.0",
     "clean-webpack-plugin": "^0.1.14",
-    "css-loader": "^0.26.0",
+    "css-loader": "^0.26.1",
     "extract-text-webpack-plugin": "^2.0.0-beta.4",
     "jest-cli": "^17.0.3",
     "koa-logger": "^2.0.0",
