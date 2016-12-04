@@ -3,7 +3,7 @@ import { matchPattern, ServerRouter } from 'react-router'
 import { Provider } from 'react-redux'
 
 import configureStore from '../../shared/store/configureStore'
-import { makeRoutes } from '../../routes/routes'
+import { makeAppRoutes } from '../../routes'
 
 /**
  * Walk through (nested) routes to extract requestInitialData funcs if location
@@ -35,7 +35,7 @@ export const createProvider = (location: String, context: Object, initialState: 
   return (
     <Provider store={store}>
       <ServerRouter location={location} context={context}>
-        {makeRoutes()}
+        {makeAppRoutes()}
       </ServerRouter>
     </Provider>
   )

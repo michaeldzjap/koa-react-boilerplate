@@ -68,7 +68,9 @@ module.exports = {
       'process.env': {
         NODE_ENV: JSON.stringify('production'),
         URL: JSON.stringify('0.0.0.0'),
-        PORT: JSON.stringify('3000')
+        PORT: JSON.stringify('3000'),
+        APP_TITLE: JSON.stringify('Koa-React Biolerplate'),
+        ADMIN_TITLE: JSON.stringify('Admin')
       }
     }),
   ],

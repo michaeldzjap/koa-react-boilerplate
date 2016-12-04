@@ -31,8 +31,8 @@ app.use(compress({
   threshold: 2048,
   flush: require('zlib').Z_SYNC_FLUSH
 }))
-app.use(routerMiddleware())
-app.use(renderMiddleware())
+//app.use(routerMiddleware())
+//app.use(renderMiddleware())
 
 http.createServer(app.callback()).listen(config.app.port, _ => {
   console.log(`Koa started in ${app.env} mode on ${config.app.url}:${config.app.port}; press Ctrl-C to terminate.`)

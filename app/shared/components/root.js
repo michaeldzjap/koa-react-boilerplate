@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Provider } from 'react-redux'
 import { BrowserRouter } from 'react-router'
 
-import { makeRoutes } from  '../../routes/routes'
+import { makeAppRoutes } from '../../routes'
 import configureStore from '../store/configureStore'
 
 const store = configureStore(window.__INITIAL_STATE__)
@@ -12,7 +12,7 @@ class Root extends Component {
     return (
       <Provider store={store}>
         <BrowserRouter {...this.props}>
-          {makeRoutes()}
+          {makeAppRoutes()}
         </BrowserRouter>
       </Provider>
     )
