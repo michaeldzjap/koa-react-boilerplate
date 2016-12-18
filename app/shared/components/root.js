@@ -2,7 +2,10 @@ import React, { Component } from 'react'
 import { Provider } from 'react-redux'
 import { BrowserRouter } from 'react-router'
 
-import { makeAppRoutes } from '../../routes'
+import Main from '../views/layouts/main'
+import { makeRoutes } from '../../routes'
+import routes from '../../routes/app'
+import { makeHead } from './head'
 import configureStore from '../store/configureStore'
 
 const store = configureStore(window.__INITIAL_STATE__)
@@ -12,7 +15,7 @@ class Root extends Component {
     return (
       <Provider store={store}>
         <BrowserRouter {...this.props}>
-          {makeAppRoutes()}
+          {makeRoutes({layout: Main, head: makeHead({title: process.env.APP_TITLE}), routes})}
         </BrowserRouter>
       </Provider>
     )

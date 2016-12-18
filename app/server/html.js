@@ -11,11 +11,20 @@ import config from '../../config'
  * @return RenderStream stream
  */
 const HTMLStream = (props: Object) => {
-  const { initialState, markup, helmet } = props
+  const { initialState, markup, helmet, scripts, stylesheets } = props
   const mapping = JSON.parse(fs.readFileSync(path.join(__dirname, '../../webpack-assets.json'), 'utf8'))
   const isDev = config.app.env === 'development'
+
+  // let scripts = []
+  // if (config.app.env === 'development') {
+  //
+  // } else {
+  //   const mapping = JSON.parse(fs.readFileSync(path.join(__dirname, '../../webpack-assets.json'), 'utf8'))
+  //
+  // }
+
   const stream = ReactDOMStream.renderToStaticMarkup(
-    <html>
+    <html {...helmet.htmlAttributes.toComponent()}>
     <head>
       <meta charSet="UTF-8" />
       <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
