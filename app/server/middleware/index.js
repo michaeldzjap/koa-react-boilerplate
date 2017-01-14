@@ -7,7 +7,7 @@ import Main from '../../shared/views/layouts/main'
 import { generateInitialState } from '../../shared/reducers'
 import appRoutes from '../../routes/app'
 import { makeHead } from '../../shared/components/head'
-import { extractInitialDataRequests, createProvider } from './router'
+import { extractInitialDataRequests, createProvider } from './reactRouter'
 import HTMLStream from '../html'
 import config from '../../../config'
 
@@ -24,13 +24,21 @@ export const errorMiddleware = _ => {
   }
 }
 
-export const routerMiddleware = _ => {
+export const adminMiddleware = _ => {
+  return async (ctx, next) => {
+    console.log('Do admin stuff')
+    await next()
+  }
+}
+
+export const reactRouterMiddleware = ({title, routes}) => {
+  console.log('TITLE:', title)
   return async (ctx, next) => {
     const context = createServerRenderContext()
     const result = context.getResult()
     if (result.redirect) {
       ctx.status = 301
-      ctx.redirect(path.join(redirectLocation.pathname, redirectLocation.search))
+      ctx.redirect(result.redirect.pathname)
     } else {
       ctx.status = result.missed ? 404 : 200
 
@@ -42,11 +50,11 @@ export const routerMiddleware = _ => {
           initialDataRequests.map(initialDataRequest => Promise.resolve(initialDataRequest()))
         )
         ctx.initialState = Object.assign({}, initialState, ...initialData)  // Attach initial state to ctx
-        ctx.routerContext = createProvider(ctx.url, context, ctx.initialState, {layout: Main, head: makeHead({title: config.app.appTitle}), routes: appRoutes})
+        ctx.routerContext = createProvider(ctx.url, context, ctx.initialState, {layout: Main, head: makeHead({title}), routes})
         await next()
       } else {
         ctx.initialState = initialState
-        ctx.routerContext = createProvider(ctx.url, context, ctx.initialState, {layout: Main, head: makeHead({title: config.app.appTitle}), routes: appRoutes})
+        ctx.routerContext = createProvider(ctx.url, context, ctx.initialState, {layout: Main, head: makeHead({title}), routes})
         await next()
       }
     }

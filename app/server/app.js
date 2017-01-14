@@ -7,7 +7,8 @@ import logger from 'koa-logger'
 import { devMiddleware, hotMiddleware } from 'koa-webpack-middleware'
 import webpack from 'webpack'
 
-import { errorMiddleware, routerMiddleware, renderMiddleware } from './middleware'
+import { errorMiddleware, renderMiddleware } from './middleware'
+import router from './router'
 import config from '../../config'
 import webpackConfig from '../../webpack.config.development'
 
@@ -31,7 +32,8 @@ app.use(compress({
   threshold: 2048,
   flush: require('zlib').Z_SYNC_FLUSH
 }))
-app.use(routerMiddleware())
+app.use(router.routes())
+app.use(router.allowedMethods())
 app.use(renderMiddleware())
 
 http.createServer(app.callback()).listen(config.app.port, _ => {
