@@ -32,7 +32,6 @@ export const adminMiddleware = _ => {
 }
 
 export const reactRouterMiddleware = ({title, routes}) => {
-  console.log('TITLE:', title)
   return async (ctx, next) => {
     const context = createServerRenderContext()
     const result = context.getResult()
