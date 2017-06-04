@@ -1,17 +1,19 @@
-import React, { Component } from 'react'
-import Navbar from '../../components/navbar'
-import Footer from '../../components/footer'
+import React, { Component } from 'react';
+import Navbar from '../../components/navbar';
+import Footer from '../../components/footer';
 
 class Main extends Component {
-  render() {
-    return (
-      <div>
-        <Navbar />
-        {this.props.children}
-        <Footer />
-      </div>
-    )
-  }
+
+    render() {
+        return (
+            <div>
+                <Navbar />
+                {this.props.children}
+                <Footer />
+            </div>
+        );
+    }
+
 }
 
-export default Main
+export default Main;
