@@ -1,11 +1,12 @@
-const path = require('path');
-const webpack = require('webpack');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const AssetsPlugin = require('assets-webpack-plugin');
-const PurifyCSSPlugin = require('purifycss-webpack-plugin');
+import path from 'path';
+import webpack from 'webpack';
+import CleanWebpackPlugin from 'clean-webpack-plugin';
+import ExtractTextPlugin from 'extract-text-webpack-plugin';
+import AssetsPlugin from 'assets-webpack-plugin';
+import PurifyCSSPlugin from 'purifycss-webpack';
+import glob from 'glob-all';
 
-module.exports = {
+export default {
     devtool: 'cheap-source-map',
     entry: {
         bundle: './app/client/index',
@@ -42,13 +43,11 @@ module.exports = {
         }),
         new ExtractTextPlugin('../css/[name].[chunkhash].css'),
         new PurifyCSSPlugin({
-            basePath: __dirname,
-            resolveExtensions: ['.js'],
-            paths: [
-                'app/server/html.js',
-                'app/shared/components/*.js',
-                'app/shared/views/*.js',
-            ]
+            paths: glob.sync([
+                path.join(__dirname, 'app/server/html.js'),
+                path.join(__dirname, 'app/shared/components/*.js'),
+                path.join(__dirname, 'app/shared/views/**/*.js')
+            ])
         }),
         new AssetsPlugin({
             path: __dirname,

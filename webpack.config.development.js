@@ -1,9 +1,9 @@
-const path = require('path');
-const webpack = require('webpack');
+import path from 'path';
+import webpack from 'webpack';
 
 const hmrQueries = ['webpack-hot-middleware/client', 'react-hot-loader/patch'];
 
-module.exports = {
+export default {
     devtool: 'cheap-module-eval-source-map',
     entry: {
         bundle: hmrQueries.concat('./app/client/index'),

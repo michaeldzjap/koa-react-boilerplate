@@ -1,4 +1,3 @@
-import path from 'path';
 import React from 'react';
 import { matchPath, StaticRouter } from 'react-router';
 import { Provider } from 'react-redux';

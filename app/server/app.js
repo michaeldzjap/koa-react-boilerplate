@@ -6,7 +6,8 @@ import Koa from 'koa';
 import serve from 'koa-static';
 import compress from 'koa-compress';
 import logger from 'koa-logger';
-import webpack from 'webpack';
+import webpackMiddleware from 'koa-webpack';
+import compressible from 'compressible';
 
 import { errorMiddleware, routerMiddleware/*, renderMiddleware*/ } from './middleware';
 import config from '../../config';
@@ -16,23 +17,28 @@ const app = new Koa();
 
 if (config.app.env === 'development') {
     app.use(logger());
-
-    // const compiler = webpack(webpackConfig);
-    // app.use(devMiddleware(compiler, {
-    //     publicPath: webpackConfig.output.publicPath,
-    //     stats: {colors: true}
-    // }));
-    // app.use(hotMiddleware(compiler));
+    app.use(webpackMiddleware({
+        config: webpackConfig,
+        dev: {
+            publicPath: webpackConfig.output.publicPath,
+            stats: {colors: true}
+        }
+    }));
 }
 
 app.use(errorMiddleware());
+
 app.use(serve(path.join(__dirname, '../../public')));
+
+const regex = RegExp('/event\-stream/i');
 app.use(compress({
-    filter: content_type => /text/i.test(content_type),
+    filter: type => !(regex.test(type)) && compressible(type),
     threshold: 2048,
     flush: require('zlib').Z_SYNC_FLUSH
 }));
+
 app.use(routerMiddleware());
+
 // app.use(renderMiddleware());
 
 http.createServer(app.callback()).listen(config.app.port, () => {
