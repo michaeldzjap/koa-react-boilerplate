@@ -10,16 +10,16 @@ export default {
         styles: hmrQueries.concat('./resources/assets/sass/main')
     },
     output: {
-        path: path.join(__dirname, 'public/assets/js'),
+        path: path.resolve(__dirname, 'public/assets/js'),
         filename: '[name].js',
         publicPath: '/assets/'
     },
     module: {
-        loaders: [
+        rules: [
             {
                 test: /\.jsx?$/,
-                loaders: ['react-hot-loader/webpack', 'babel-loader'],
-                include: path.join(__dirname, 'app')
+                loader: 'babel-loader',
+                exclude: path.resolve(__dirname, 'node_modules')
             },
             {
                 test: /\.s?css$/,
@@ -28,7 +28,7 @@ export default {
         ]
     },
     plugins: [
-        new webpack.optimize.OccurrenceOrderPlugin(),
+        new webpack.optimize.ModuleConcatenationPlugin(),
         new webpack.HotModuleReplacementPlugin(),
         new webpack.NoEmitOnErrorsPlugin(),
         new webpack.DefinePlugin({

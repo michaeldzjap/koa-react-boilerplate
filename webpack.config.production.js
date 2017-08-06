@@ -37,7 +37,6 @@ export default {
         ]
     },
     plugins: [
-        new webpack.optimize.OccurrenceOrderPlugin(),
         new CleanWebpackPlugin(['public/assets'], {
             root: __dirname
         }),

@@ -2,7 +2,7 @@ node_modules
 .DS_Store
 .env
 npm-debug.log
-build
+dist
 public/assets
 stats.json
 webpack-assets.json
